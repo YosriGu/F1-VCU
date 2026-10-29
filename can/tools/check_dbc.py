@@ -25,6 +25,9 @@ RESERVED_RANGE = (0x7E0, 0x7FF)
 
 VALID_CLASSES = {"A", "B", "C"}
 
+# Buses whose receiver is a third-party device that cannot carry the E2E header.
+E2E_EXEMPT_BUSES = {"pt_dti_r4"}
+
 
 def check_file(path) -> list[str]:
     errors: list[str] = []
@@ -76,6 +79,7 @@ def check_file(path) -> list[str]:
         cls = u.safety_class(m)
         rxt = u.rx_timeout_ms(m)
         did = u.data_id(m)
+        exempt = u.e2e_exempt(m)
 
         if cyc <= 0:
             err(m, "GenMsgCycleTime must be > 0 (every message needs a period for the bus-load check)")
@@ -92,7 +96,15 @@ def check_file(path) -> list[str]:
             err(m, "RxTimeoutMs is only meaningful for messages the VCU receives")
 
         # --- frame protection
-        if cls in ("A", "B") and did == 0:
+        if exempt:
+            if name not in E2E_EXEMPT_BUSES:
+                err(m, "E2EExempt is only allowed on third-party buses "
+                       f"({', '.join(sorted(E2E_EXEMPT_BUSES))})")
+            if cls == "C":
+                err(m, "E2EExempt is pointless on class C")
+            if did != 0:
+                err(m, "E2EExempt and DataId are mutually exclusive")
+        elif cls in ("A", "B") and did == 0:
             err(m, "class A/B messages must carry the E2E header (set DataId 1..255)")
         if did != 0:
             if m.length != 8:
