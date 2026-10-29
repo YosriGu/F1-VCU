@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.asc text eol=lf
+*.dbc text eol=lf
+*.blf binary
+*.mf4 binary
+*.pdf binary
+can/gen/** linguist-generated=true
+docs/generated/** linguist-generated=true

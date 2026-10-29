@@ -1,0 +1,442 @@
+VERSION "veh_0.2_DRAFT"
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	BA_DEF_DEF_
+
+BS_:
+
+BU_: VCU AMS DASH LOG PDU SNS_STEER SNS_DAMP_F SNS_DAMP_R SNS_TEMP
+
+
+BO_ 1 VCU_EMERGENCY: 8 VCU
+ SG_ VCU_EMERG_CRC : 0|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_EMERG_CNT : 8|4@1+ (1,0) [0|15] "" DASH,LOG
+ SG_ VCU_EMERG_FaultClass : 12|2@1+ (1,0) [0|3] "" DASH,LOG
+ SG_ VCU_EMERG_Code : 16|16@1+ (1,0) [0|65535] "" DASH,LOG
+ SG_ VCU_EMERG_Source : 32|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_EMERG_Param : 40|16@1+ (1,0) [0|65535] "" DASH,LOG
+
+BO_ 16 AMS_STATE: 8 AMS
+ SG_ AMS_STATE_CRC : 0|8@1+ (1,0) [0|255] "" VCU,DASH,LOG
+ SG_ AMS_STATE_CNT : 8|4@1+ (1,0) [0|15] "" VCU,DASH,LOG
+ SG_ AMS_State : 16|8@1+ (1,0) [0|255] "" VCU,DASH,LOG
+ SG_ AMS_OK : 24|1@1+ (1,0) [0|1] "" VCU,DASH,LOG
+ SG_ AMS_FaultFlags : 32|16@1+ (1,0) [0|65535] "" VCU,DASH,LOG
+
+BO_ 17 AMS_LIMITS: 8 AMS
+ SG_ AMS_LIM_CRC : 0|8@1+ (1,0) [0|255] "" VCU
+ SG_ AMS_LIM_CNT : 8|4@1+ (1,0) [0|15] "" VCU
+ SG_ AMS_DCL_A : 16|16@1+ (0.1,0) [0|900] "A" VCU,DASH,LOG
+ SG_ AMS_CCL_A : 32|16@1+ (0.1,0) [0|900] "A" VCU,DASH,LOG
+
+BO_ 18 AMS_PACK: 8 AMS
+ SG_ AMS_PACK_CRC : 0|8@1+ (1,0) [0|255] "" VCU,DASH,LOG
+ SG_ AMS_PACK_CNT : 8|4@1+ (1,0) [0|15] "" VCU,DASH,LOG
+ SG_ AMS_PackVoltage_V : 16|16@1+ (0.1,0) [0|1000] "V" VCU,DASH,LOG
+ SG_ AMS_PackCurrent_A : 32|16@1- (0.1,0) [-1000|1000] "A" VCU,DASH,LOG
+ SG_ AMS_Soc_pct : 48|8@1+ (0.5,0) [0|100] "%" VCU,DASH,LOG
+
+BO_ 19 AMS_TEMPV: 8 AMS
+ SG_ AMS_TEMPV_CRC : 0|8@1+ (1,0) [0|255] "" VCU,DASH,LOG
+ SG_ AMS_TEMPV_CNT : 8|4@1+ (1,0) [0|15] "" VCU,DASH,LOG
+ SG_ AMS_CellVMin_V : 16|16@1+ (0.0001,0) [0|6.5535] "V" VCU,DASH,LOG
+ SG_ AMS_CellVMax_V : 32|16@1+ (0.0001,0) [0|6.5535] "V" VCU,DASH,LOG
+ SG_ AMS_CellTMin_C : 48|8@1+ (1,-40) [-40|215] "degC" VCU,DASH,LOG
+ SG_ AMS_CellTMax_C : 56|8@1+ (1,-40) [-40|215] "degC" VCU,DASH,LOG
+
+BO_ 31 AMS_HB: 8 AMS
+ SG_ AMS_HB_CRC : 0|8@1+ (1,0) [0|255] "" VCU,DASH,LOG
+ SG_ AMS_HB_CNT : 8|4@1+ (1,0) [0|15] "" VCU,DASH,LOG
+ SG_ AMS_ErrFlags : 16|32@1+ (1,0) [0|4294967295] "" VCU,DASH,LOG
+ SG_ AMS_HbCounter : 48|16@1+ (1,0) [0|65535] "" VCU,DASH,LOG
+
+BO_ 32 VCU_STATE: 8 VCU
+ SG_ VCU_STATE_CRC : 0|8@1+ (1,0) [0|255] "" AMS,DASH,LOG
+ SG_ VCU_STATE_CNT : 8|4@1+ (1,0) [0|15] "" AMS,DASH,LOG
+ SG_ VCU_FaultClass : 12|2@1+ (1,0) [0|3] "" DASH,LOG
+ SG_ VCU_StateMachine : 16|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_TorqueReqPct : 24|10@1+ (0.1,0) [0|100] "%" DASH,LOG
+ SG_ VCU_TorqueLimPct : 34|10@1+ (0.1,0) [0|100] "%" DASH,LOG
+ SG_ VCU_R2D : 44|1@1+ (1,0) [0|1] "" DASH,LOG
+ SG_ VCU_TSActive : 45|1@1+ (1,0) [0|1] "" DASH,LOG
+ SG_ VCU_SDC_Sense : 46|4@1+ (1,0) [0|15] "" LOG
+
+BO_ 33 VCU_HB: 8 VCU
+ SG_ VCU_HB_CRC : 0|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_HB_CNT : 8|4@1+ (1,0) [0|15] "" DASH,LOG
+ SG_ VCU_ErrFlags : 16|32@1+ (1,0) [0|4294967295] "" DASH,LOG
+ SG_ VCU_HbCounter : 48|16@1+ (1,0) [0|65535] "" LOG
+
+BO_ 34 VCU_POWER: 8 VCU
+ SG_ VCU_POWER_CRC : 0|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_POWER_CNT : 8|4@1+ (1,0) [0|15] "" DASH,LOG
+ SG_ VCU_PwrLimState : 12|4@1+ (1,0) [0|15] "" DASH,LOG
+ SG_ VCU_DcVoltage_V : 16|16@1+ (0.1,0) [0|1000] "V" DASH,LOG
+ SG_ VCU_DcCurrent_A : 32|16@1- (0.1,0) [-1000|1000] "A" DASH,LOG
+ SG_ VCU_Power_kW : 48|16@1- (0.01,0) [-200|200] "kW" DASH,LOG
+
+BO_ 35 VCU_VERSION: 8 VCU
+ SG_ VCU_VER_CRC : 0|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_VER_CNT : 8|4@1+ (1,0) [0|15] "" DASH,LOG
+ SG_ VCU_SwMajor : 16|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_SwMinor : 24|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_SwPatch : 32|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_CalCrc16 : 40|16@1+ (1,0) [0|65535] "" DASH,LOG
+
+BO_ 48 DASH_IN: 4 DASH
+ SG_ DASH_MapSelect : 0|8@1+ (1,0) [0|255] "" VCU
+ SG_ DASH_TcLevel : 8|8@1+ (1,0) [0|255] "" VCU
+ SG_ DASH_Page : 16|8@1+ (1,0) [0|255] "" VCU
+
+BO_ 257 VCU_TELEM1: 8 VCU
+ SG_ VCU_Tlm_Apps1Pct : 0|16@1+ (0.1,0) [0|100] "%" DASH,LOG
+ SG_ VCU_Tlm_Apps2Pct : 16|16@1+ (0.1,0) [0|100] "%" DASH,LOG
+ SG_ VCU_Tlm_BrakeFrontBar : 32|16@1+ (0.1,0) [0|200] "bar" DASH,LOG
+ SG_ VCU_Tlm_BrakeRearBar : 48|16@1+ (0.1,0) [0|200] "bar" DASH,LOG
+
+BO_ 258 VCU_TELEM2: 8 VCU
+ SG_ VCU_Tlm_WheelFL_kmh : 0|16@1+ (0.01,0) [0|300] "km/h" DASH,LOG
+ SG_ VCU_Tlm_WheelFR_kmh : 16|16@1+ (0.01,0) [0|300] "km/h" DASH,LOG
+ SG_ VCU_Tlm_WheelRL_kmh : 32|16@1+ (0.01,0) [0|300] "km/h" DASH,LOG
+ SG_ VCU_Tlm_WheelRR_kmh : 48|16@1+ (0.01,0) [0|300] "km/h" DASH,LOG
+
+BO_ 259 VCU_TELEM3: 8 VCU
+ SG_ VCU_Tlm_AccelX_g : 0|16@1- (0.001,0) [-16|16] "g" DASH,LOG
+ SG_ VCU_Tlm_AccelY_g : 16|16@1- (0.001,0) [-16|16] "g" DASH,LOG
+ SG_ VCU_Tlm_AccelZ_g : 32|16@1- (0.001,0) [-16|16] "g" DASH,LOG
+ SG_ VCU_Tlm_GyroZ_dps : 48|16@1- (0.01,0) [-300|300] "deg/s" DASH,LOG
+
+BO_ 260 VCU_TELEM4: 8 VCU
+ SG_ VCU_Tlm_GyroX_dps : 0|16@1- (0.01,0) [-300|300] "deg/s" DASH,LOG
+ SG_ VCU_Tlm_GyroY_dps : 16|16@1- (0.01,0) [-300|300] "deg/s" DASH,LOG
+ SG_ VCU_Tlm_CmdCurrent_A : 32|16@1- (0.1,0) [-600|600] "A" DASH,LOG
+ SG_ VCU_Tlm_MeasIq_A : 48|16@1- (0.1,0) [-600|600] "A" DASH,LOG
+
+BO_ 261 VCU_TELEM5: 8 VCU
+ SG_ VCU_Tlm_InvTemp_C : 0|16@1- (0.1,0) [-40|200] "degC" DASH,LOG
+ SG_ VCU_Tlm_MotorTemp_C : 16|16@1- (0.1,0) [-40|250] "degC" DASH,LOG
+ SG_ VCU_Tlm_BoardTemp_C : 32|16@1- (0.1,0) [-40|150] "degC" DASH,LOG
+ SG_ VCU_Tlm_LvVoltage_V : 48|16@1+ (0.01,0) [0|40] "V" DASH,LOG
+
+BO_ 262 VCU_TELEM6: 8 VCU
+ SG_ VCU_Tlm_InvErpm : 0|32@1- (1,0) [-2147483648|2147483647] "erpm" DASH,LOG
+ SG_ VCU_Tlm_InvFault : 32|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_Tlm_PtTec : 40|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_Tlm_PtRec : 48|8@1+ (1,0) [0|255] "" DASH,LOG
+ SG_ VCU_Tlm_PtBusOffCnt : 56|8@1+ (1,0) [0|255] "" DASH,LOG
+
+BO_ 272 VCU_DASH: 6 VCU
+ SG_ VCU_DashSpeed_kmh : 0|16@1+ (0.01,0) [0|300] "km/h" DASH
+ SG_ VCU_DashSoc_pct : 16|8@1+ (0.5,0) [0|100] "%" DASH
+ SG_ VCU_DashWarnFlags : 24|16@1+ (1,0) [0|65535] "" DASH
+ SG_ VCU_DashCode : 40|8@1+ (1,0) [0|255] "" DASH
+
+BO_ 512 SNS_STEER: 8 SNS_STEER
+ SG_ SNS_STEER_CRC : 0|8@1+ (1,0) [0|255] "" VCU,LOG
+ SG_ SNS_STEER_CNT : 8|4@1+ (1,0) [0|15] "" VCU,LOG
+ SG_ SNS_SteerStatus : 12|4@1+ (1,0) [0|15] "" VCU,LOG
+ SG_ SNS_SteerAngle_deg : 16|16@1- (0.01,0) [-327|327] "deg" VCU,LOG
+ SG_ SNS_SteerRate_dps : 32|16@1- (0.1,0) [-1000|1000] "deg/s" VCU,LOG
+
+BO_ 513 SNS_DAMP_F: 4 SNS_DAMP_F
+ SG_ SNS_DampFL_mm : 0|16@1+ (0.01,0) [0|150] "mm" LOG
+ SG_ SNS_DampFR_mm : 16|16@1+ (0.01,0) [0|150] "mm" LOG
+
+BO_ 514 SNS_DAMP_R: 4 SNS_DAMP_R
+ SG_ SNS_DampRL_mm : 0|16@1+ (0.01,0) [0|150] "mm" LOG
+ SG_ SNS_DampRR_mm : 16|16@1+ (0.01,0) [0|150] "mm" LOG
+
+BO_ 515 SNS_TYRE_TEMP: 8 SNS_TEMP
+ SG_ SNS_TyreFL_C : 0|16@1- (0.1,0) [-40|250] "degC" LOG
+ SG_ SNS_TyreFR_C : 16|16@1- (0.1,0) [-40|250] "degC" LOG
+ SG_ SNS_TyreRL_C : 32|16@1- (0.1,0) [-40|250] "degC" LOG
+ SG_ SNS_TyreRR_C : 48|16@1- (0.1,0) [-40|250] "degC" LOG
+
+BO_ 516 SNS_BRAKE_TEMP: 8 SNS_TEMP
+ SG_ SNS_BrakeFL_C : 0|16@1- (0.1,0) [-40|1000] "degC" LOG
+ SG_ SNS_BrakeFR_C : 16|16@1- (0.1,0) [-40|1000] "degC" LOG
+ SG_ SNS_BrakeRL_C : 32|16@1- (0.1,0) [-40|1000] "degC" LOG
+ SG_ SNS_BrakeRR_C : 48|16@1- (0.1,0) [-40|1000] "degC" LOG
+
+BO_ 768 PDU_STATUS: 8 PDU
+ SG_ PDU_Rail_V : 0|16@1+ (0.01,0) [0|40] "V" VCU,LOG
+ SG_ PDU_Ch1_A : 16|8@1+ (0.1,0) [0|25.5] "A" VCU,LOG
+ SG_ PDU_Ch2_A : 24|8@1+ (0.1,0) [0|25.5] "A" VCU,LOG
+ SG_ PDU_Ch3_A : 32|8@1+ (0.1,0) [0|25.5] "A" VCU,LOG
+ SG_ PDU_Ch4_A : 40|8@1+ (0.1,0) [0|25.5] "A" VCU,LOG
+ SG_ PDU_FaultFlags : 48|16@1+ (1,0) [0|65535] "" VCU,LOG
+
+BO_ 769 PDU_CMD: 3 VCU
+ SG_ VCU_PduPumpDuty_pct : 0|8@1+ (0.5,0) [0|100] "%" PDU
+ SG_ VCU_PduFan1Duty_pct : 8|8@1+ (0.5,0) [0|100] "%" PDU
+ SG_ VCU_PduFan2Duty_pct : 16|8@1+ (0.5,0) [0|100] "%" PDU
+
+BO_ 1024 TIME_SYNC: 8 VCU
+ SG_ TS_UptimeMs : 0|32@1+ (1,0) [0|4294967295] "ms" LOG,DASH
+ SG_ TS_Seconds : 32|32@1+ (1,0) [0|4294967295] "s" LOG,DASH
+
+CM_ "VEH-CAN, 1 Mbit/s, classic CAN, 11-bit IDs. DRAFT message set derived from the VCU CAN spec section 4.2. Every message is Verification DRAFT until agreed with the owning team and tested. ID ranges: spec section 4.1.";
+CM_ BO_ 1 "Global fault broadcast. Sent immediately on a class A/B fault, then every 100 ms while a fault is active.";
+CM_ SG_ 1 VCU_EMERG_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 1 VCU_EMERG_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 1 VCU_EMERG_Code "Fault code from the VCU fault table (to be allocated).";
+CM_ SG_ 1 VCU_EMERG_Source "Fault source module (to be allocated).";
+CM_ SG_ 1 VCU_EMERG_Param "Fault-specific parameter.";
+CM_ BO_ 16 "AMS state. Class A. VCU timeout 60 ms = 3 x period. DRAFT payload: state code, AMS OK flag, fault flag word; to be agreed with the AMS team.";
+CM_ SG_ 16 AMS_STATE_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 16 AMS_STATE_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 16 AMS_State "DRAFT value table; the AMS team owns the real state list.";
+CM_ SG_ 16 AMS_OK "1 = AMS reports no fault. Fail-safe start value 0. Information only: the AMS opens the SDC in hardware.";
+CM_ SG_ 16 AMS_FaultFlags "DRAFT bit allocation by the AMS team.";
+CM_ BO_ 17 "Discharge and charge current limits. Class A. An invalid or timed-out DCL/CCL is treated as 0 A by the VCU.";
+CM_ SG_ 17 AMS_LIM_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 17 AMS_LIM_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 17 AMS_DCL_A "Discharge current limit. Start value 0 A (fail-safe).";
+CM_ SG_ 17 AMS_CCL_A "Charge current limit (also limits regen). Start value 0 A (fail-safe).";
+CM_ BO_ 18 "Pack voltage, current and state of charge. Class B. Positive current = discharge (design choice, confirm with the AMS team).";
+CM_ SG_ 18 AMS_PACK_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 18 AMS_PACK_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 18 AMS_Soc_pct "0.5 % per bit (same step as the Orion OBD2 SOC value).";
+CM_ BO_ 19 "Minimum and maximum cell voltage and temperature. Class B, timeout 300 ms = 3 x period.";
+CM_ SG_ 19 AMS_TEMPV_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 19 AMS_TEMPV_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ BO_ 31 "AMS heartbeat with error flags. Class B, timeout 300 ms.";
+CM_ SG_ 31 AMS_HB_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 31 AMS_HB_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 31 AMS_HbCounter "Free-running counter, increments every transmission.";
+CM_ BO_ 32 "VCU state broadcast, 10 ms. Information only.";
+CM_ SG_ 32 VCU_STATE_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 32 VCU_STATE_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 32 VCU_StateMachine "State machine of the VCU design, section 5.3.";
+CM_ SG_ 32 VCU_TorqueReqPct "Driver torque request after the pedal map.";
+CM_ SG_ 32 VCU_TorqueLimPct "Torque limit after the limiter chain.";
+CM_ SG_ 32 VCU_SDC_Sense "Read-only SDC node sensing (bit allocation to be defined in the ICD).";
+CM_ BO_ 33 "VCU heartbeat, 100 ms: 32 error flags plus a free-running counter.";
+CM_ SG_ 33 VCU_HB_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 33 VCU_HB_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ BO_ 34 "Traction-system power as seen by the VCU. Class B.";
+CM_ SG_ 34 VCU_POWER_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 34 VCU_POWER_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 34 VCU_PwrLimState "Active limiter stage (DRAFT list).";
+CM_ BO_ 35 "VCU software version and calibration CRC, 1 s.";
+CM_ SG_ 35 VCU_VER_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 35 VCU_VER_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ BO_ 48 "Dashboard input, class C. Can only lower torque or power. No E2E header (DataId 0). VCU falls back to the default map after 250 ms.";
+CM_ BO_ 257 "Telemetry 1: pedal and brake pressure. Information only.";
+CM_ BO_ 258 "Telemetry 2: wheel speeds.";
+CM_ BO_ 259 "Telemetry 3: IMU acceleration and yaw rate.";
+CM_ BO_ 260 "Telemetry 4: roll and pitch rate, commanded and measured inverter current.";
+CM_ SG_ 260 VCU_Tlm_MeasIq_A "Measured Iq from the inverter status. Source layout is unverified (T-DTI-1).";
+CM_ BO_ 261 "Telemetry 5: temperatures and LV supply.";
+CM_ BO_ 262 "Telemetry 6: inverter speed and fault, PT-CAN health counters (spec section 7.4).";
+CM_ BO_ 272 "Dashboard feed: speed, state of charge, warnings.";
+CM_ SG_ 272 VCU_DashCode "Text/state code index (to be allocated).";
+CM_ BO_ 512 "Steering angle sensor node. VCU timeout 100 ms disables the feature that uses it. Never used to raise torque.";
+CM_ SG_ 512 SNS_STEER_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 512 SNS_STEER_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 512 SNS_SteerStatus "Sensor status nibble (0 = OK).";
+CM_ BO_ 513 "Front damper travel, logger only.";
+CM_ BO_ 514 "Rear damper travel, logger only.";
+CM_ BO_ 515 "Tyre temperatures, logger only.";
+CM_ BO_ 516 "Brake disc temperatures, logger only.";
+CM_ BO_ 768 "PDU status. Channel assignment (pump, fans, ...) is defined in the ICD.";
+CM_ BO_ 769 "Cooling request. The PDU runs cooling at 100 % if this message is silent for 500 ms (a silent controller must not stop cooling).";
+CM_ BO_ 1024 "Time reference for the logger. The logger itself is listen-only and never transmits.";
+
+BA_DEF_ "BusType" STRING ;
+BA_DEF_ "DBName" STRING ;
+BA_DEF_ "Baudrate" INT 0 1000000;
+BA_DEF_ BO_ "GenMsgSendType" ENUM "cyclic","triggered","cyclicIfActive","cyclicAndTriggered","cyclicIfActiveAndTriggered","none";
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","reserved","J1939PG";
+BA_DEF_ BO_ "SafetyClass" STRING ;
+BA_DEF_ BO_ "RxTimeoutMs" INT 0 65535;
+BA_DEF_ BO_ "DataId" INT 0 255;
+BA_DEF_ BO_ "Verification" STRING ;
+BA_DEF_ SG_ "GenSigStartValue" INT -2147483648 2147483647;
+BA_DEF_DEF_ "BusType" "CAN";
+BA_DEF_DEF_ "DBName" "";
+BA_DEF_DEF_ "Baudrate" 0;
+BA_DEF_DEF_ "GenMsgSendType" "none";
+BA_DEF_DEF_ "GenMsgCycleTime" 0;
+BA_DEF_DEF_ "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_ "SafetyClass" "C";
+BA_DEF_DEF_ "RxTimeoutMs" 0;
+BA_DEF_DEF_ "DataId" 0;
+BA_DEF_DEF_ "Verification" "DRAFT";
+BA_DEF_DEF_ "GenSigStartValue" 0;
+
+BA_ "BusType" "CAN";
+BA_ "DBName" "veh";
+BA_ "Baudrate" 1000000;
+BA_ "GenMsgSendType" BO_ 1 3;
+BA_ "GenMsgCycleTime" BO_ 1 100;
+BA_ "VFrameFormat" BO_ 1 0;
+BA_ "SafetyClass" BO_ 1 "B";
+BA_ "DataId" BO_ 1 210;
+BA_ "Verification" BO_ 1 "DRAFT";
+BA_ "GenMsgSendType" BO_ 16 0;
+BA_ "GenMsgCycleTime" BO_ 16 20;
+BA_ "VFrameFormat" BO_ 16 0;
+BA_ "SafetyClass" BO_ 16 "A";
+BA_ "RxTimeoutMs" BO_ 16 60;
+BA_ "DataId" BO_ 16 60;
+BA_ "Verification" BO_ 16 "DRAFT";
+BA_ "GenSigStartValue" SG_ 16 AMS_OK 0;
+BA_ "GenMsgSendType" BO_ 17 0;
+BA_ "GenMsgCycleTime" BO_ 17 20;
+BA_ "VFrameFormat" BO_ 17 0;
+BA_ "SafetyClass" BO_ 17 "A";
+BA_ "RxTimeoutMs" BO_ 17 60;
+BA_ "DataId" BO_ 17 90;
+BA_ "Verification" BO_ 17 "DRAFT";
+BA_ "GenSigStartValue" SG_ 17 AMS_DCL_A 0;
+BA_ "GenSigStartValue" SG_ 17 AMS_CCL_A 0;
+BA_ "GenMsgSendType" BO_ 18 0;
+BA_ "GenMsgCycleTime" BO_ 18 20;
+BA_ "VFrameFormat" BO_ 18 0;
+BA_ "SafetyClass" BO_ 18 "B";
+BA_ "RxTimeoutMs" BO_ 18 60;
+BA_ "DataId" BO_ 18 120;
+BA_ "Verification" BO_ 18 "DRAFT";
+BA_ "GenMsgSendType" BO_ 19 0;
+BA_ "GenMsgCycleTime" BO_ 19 100;
+BA_ "VFrameFormat" BO_ 19 0;
+BA_ "SafetyClass" BO_ 19 "B";
+BA_ "RxTimeoutMs" BO_ 19 300;
+BA_ "DataId" BO_ 19 45;
+BA_ "Verification" BO_ 19 "DRAFT";
+BA_ "GenMsgSendType" BO_ 31 0;
+BA_ "GenMsgCycleTime" BO_ 31 100;
+BA_ "VFrameFormat" BO_ 31 0;
+BA_ "SafetyClass" BO_ 31 "B";
+BA_ "RxTimeoutMs" BO_ 31 300;
+BA_ "DataId" BO_ 31 225;
+BA_ "Verification" BO_ 31 "DRAFT";
+BA_ "GenMsgSendType" BO_ 32 0;
+BA_ "GenMsgCycleTime" BO_ 32 10;
+BA_ "VFrameFormat" BO_ 32 0;
+BA_ "SafetyClass" BO_ 32 "B";
+BA_ "DataId" BO_ 32 167;
+BA_ "Verification" BO_ 32 "DRAFT";
+BA_ "GenSigStartValue" SG_ 32 VCU_TorqueReqPct 0;
+BA_ "GenSigStartValue" SG_ 32 VCU_TorqueLimPct 0;
+BA_ "GenMsgSendType" BO_ 33 0;
+BA_ "GenMsgCycleTime" BO_ 33 100;
+BA_ "VFrameFormat" BO_ 33 0;
+BA_ "SafetyClass" BO_ 33 "C";
+BA_ "DataId" BO_ 33 195;
+BA_ "Verification" BO_ 33 "DRAFT";
+BA_ "GenMsgSendType" BO_ 34 0;
+BA_ "GenMsgCycleTime" BO_ 34 20;
+BA_ "VFrameFormat" BO_ 34 0;
+BA_ "SafetyClass" BO_ 34 "B";
+BA_ "DataId" BO_ 34 75;
+BA_ "Verification" BO_ 34 "DRAFT";
+BA_ "GenMsgSendType" BO_ 35 0;
+BA_ "GenMsgCycleTime" BO_ 35 1000;
+BA_ "VFrameFormat" BO_ 35 0;
+BA_ "SafetyClass" BO_ 35 "C";
+BA_ "DataId" BO_ 35 150;
+BA_ "Verification" BO_ 35 "DRAFT";
+BA_ "GenMsgSendType" BO_ 48 0;
+BA_ "GenMsgCycleTime" BO_ 48 50;
+BA_ "VFrameFormat" BO_ 48 0;
+BA_ "SafetyClass" BO_ 48 "C";
+BA_ "RxTimeoutMs" BO_ 48 250;
+BA_ "Verification" BO_ 48 "DRAFT";
+BA_ "GenSigStartValue" SG_ 48 DASH_MapSelect 0;
+BA_ "GenSigStartValue" SG_ 48 DASH_TcLevel 0;
+BA_ "GenSigStartValue" SG_ 48 DASH_Page 0;
+BA_ "GenMsgSendType" BO_ 257 0;
+BA_ "GenMsgCycleTime" BO_ 257 20;
+BA_ "VFrameFormat" BO_ 257 0;
+BA_ "SafetyClass" BO_ 257 "C";
+BA_ "Verification" BO_ 257 "DRAFT";
+BA_ "GenMsgSendType" BO_ 258 0;
+BA_ "GenMsgCycleTime" BO_ 258 20;
+BA_ "VFrameFormat" BO_ 258 0;
+BA_ "SafetyClass" BO_ 258 "C";
+BA_ "Verification" BO_ 258 "DRAFT";
+BA_ "GenMsgSendType" BO_ 259 0;
+BA_ "GenMsgCycleTime" BO_ 259 20;
+BA_ "VFrameFormat" BO_ 259 0;
+BA_ "SafetyClass" BO_ 259 "C";
+BA_ "Verification" BO_ 259 "DRAFT";
+BA_ "GenMsgSendType" BO_ 260 0;
+BA_ "GenMsgCycleTime" BO_ 260 20;
+BA_ "VFrameFormat" BO_ 260 0;
+BA_ "SafetyClass" BO_ 260 "C";
+BA_ "Verification" BO_ 260 "DRAFT";
+BA_ "GenMsgSendType" BO_ 261 0;
+BA_ "GenMsgCycleTime" BO_ 261 20;
+BA_ "VFrameFormat" BO_ 261 0;
+BA_ "SafetyClass" BO_ 261 "C";
+BA_ "Verification" BO_ 261 "DRAFT";
+BA_ "GenMsgSendType" BO_ 262 0;
+BA_ "GenMsgCycleTime" BO_ 262 20;
+BA_ "VFrameFormat" BO_ 262 0;
+BA_ "SafetyClass" BO_ 262 "C";
+BA_ "Verification" BO_ 262 "DRAFT";
+BA_ "GenMsgSendType" BO_ 272 0;
+BA_ "GenMsgCycleTime" BO_ 272 50;
+BA_ "VFrameFormat" BO_ 272 0;
+BA_ "SafetyClass" BO_ 272 "C";
+BA_ "Verification" BO_ 272 "DRAFT";
+BA_ "GenMsgSendType" BO_ 512 0;
+BA_ "GenMsgCycleTime" BO_ 512 10;
+BA_ "VFrameFormat" BO_ 512 0;
+BA_ "SafetyClass" BO_ 512 "C";
+BA_ "RxTimeoutMs" BO_ 512 100;
+BA_ "DataId" BO_ 512 113;
+BA_ "Verification" BO_ 512 "DRAFT";
+BA_ "GenMsgSendType" BO_ 513 0;
+BA_ "GenMsgCycleTime" BO_ 513 10;
+BA_ "VFrameFormat" BO_ 513 0;
+BA_ "SafetyClass" BO_ 513 "C";
+BA_ "Verification" BO_ 513 "DRAFT";
+BA_ "GenMsgSendType" BO_ 514 0;
+BA_ "GenMsgCycleTime" BO_ 514 10;
+BA_ "VFrameFormat" BO_ 514 0;
+BA_ "SafetyClass" BO_ 514 "C";
+BA_ "Verification" BO_ 514 "DRAFT";
+BA_ "GenMsgSendType" BO_ 515 0;
+BA_ "GenMsgCycleTime" BO_ 515 100;
+BA_ "VFrameFormat" BO_ 515 0;
+BA_ "SafetyClass" BO_ 515 "C";
+BA_ "Verification" BO_ 515 "DRAFT";
+BA_ "GenMsgSendType" BO_ 516 0;
+BA_ "GenMsgCycleTime" BO_ 516 100;
+BA_ "VFrameFormat" BO_ 516 0;
+BA_ "SafetyClass" BO_ 516 "C";
+BA_ "Verification" BO_ 516 "DRAFT";
+BA_ "GenMsgSendType" BO_ 768 0;
+BA_ "GenMsgCycleTime" BO_ 768 20;
+BA_ "VFrameFormat" BO_ 768 0;
+BA_ "SafetyClass" BO_ 768 "C";
+BA_ "RxTimeoutMs" BO_ 768 100;
+BA_ "Verification" BO_ 768 "DRAFT";
+BA_ "GenMsgSendType" BO_ 769 0;
+BA_ "GenMsgCycleTime" BO_ 769 50;
+BA_ "VFrameFormat" BO_ 769 0;
+BA_ "SafetyClass" BO_ 769 "C";
+BA_ "Verification" BO_ 769 "DRAFT";
+BA_ "GenSigStartValue" SG_ 769 VCU_PduPumpDuty_pct 200;
+BA_ "GenSigStartValue" SG_ 769 VCU_PduFan1Duty_pct 200;
+BA_ "GenSigStartValue" SG_ 769 VCU_PduFan2Duty_pct 200;
+BA_ "GenMsgSendType" BO_ 1024 0;
+BA_ "GenMsgCycleTime" BO_ 1024 1000;
+BA_ "VFrameFormat" BO_ 1024 0;
+BA_ "SafetyClass" BO_ 1024 "C";
+BA_ "Verification" BO_ 1024 "DRAFT";
+
+VAL_ 1 VCU_EMERG_FaultClass 0 "NONE" 1 "CLASS_C" 2 "CLASS_B" 3 "CLASS_A";
+VAL_ 16 AMS_State 0 "INIT" 1 "READY" 2 "FAULT";
+VAL_ 32 VCU_FaultClass 0 "NONE" 1 "CLASS_C" 2 "CLASS_B" 3 "CLASS_A";
+VAL_ 32 VCU_StateMachine 0 "INIT" 1 "SELF_TEST" 2 "LV_READY" 3 "PRECHARGE_WAIT" 4 "TS_ACTIVE" 5 "R2D_SOUND" 6 "DRIVE" 7 "TORQUE_INHIBIT" 8 "SHUTDOWN";
+VAL_ 34 VCU_PwrLimState 0 "OFF" 1 "CURRENT" 2 "POWER" 3 "AMS_DCL" 4 "THERMAL";

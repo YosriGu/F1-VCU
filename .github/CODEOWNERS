@@ -1,0 +1,18 @@
+# REPLACE @HARD/... with your real GitHub organisation and team names, then enable
+# "Require review from Code Owners" in the branch protection rule for main.
+# Last matching pattern wins, so the specific lines come after the general ones.
+
+*                            @HARD/leads
+
+/can/dbc/                    @HARD/firmware @HARD/safety
+/can/gen/                    @HARD/firmware
+/can/tools/                  @HARD/firmware
+/can/tests/                  @HARD/firmware @HARD/safety
+/can/captures/               @HARD/inverter @HARD/firmware
+/firmware/                   @HARD/firmware
+/firmware/lib/can_e2e/       @HARD/firmware @HARD/safety
+/firmware/lib/can_dti/       @HARD/firmware @HARD/inverter @HARD/safety
+/hardware/                   @HARD/hardware @HARD/safety
+/docs/traceability.csv       @HARD/safety
+/docs/adr/                   @HARD/leads
+/.github/                    @HARD/leads

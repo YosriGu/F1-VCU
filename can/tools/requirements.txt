@@ -1,0 +1,4 @@
+# Direct dependencies, exact versions (tested together). CI installs requirements.lock.txt.
+cantools==44.1.0
+python-can==4.6.1
+pytest==9.1.1

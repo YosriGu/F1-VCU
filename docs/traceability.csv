@@ -1,0 +1,15 @@
+rule,requirement,implemented_in,test_or_evidence,status,note
+T11.8.5,Separate APPS supplies and signal lines,"Two LDOs, two harness wires each, two ADCs","Schematic review, continuity test",open,seed row from the VCU design doc section 6
+T11.8.6,Non-intersecting transfer functions; short gives implausibility,"Design 4.3 curves, SW normalisation",Bench short-circuit test,open,seed row from the VCU design doc section 6
+T11.8.7 / T11.9,APPS is an SCS; failure detection,"Range check, pull networks, SW + HW monitors",Fault-injection report,open,seed row from the VCU design doc section 6
+T11.8.8-9,>10 pp for >100 ms removes motor power,SW timer + HW comparator + HW enable,Timed scope capture,open,seed row; whether 100 ms is measured to command or to torque is an open question 
+T11.8.14,Only lower torque,"Limiter chain, design 5.4","Unit tests, code review",open,seed row from the VCU design doc section 6
+T1.3.1,Direct connection for SDC elements,No SDC element on the VCU PCB,Harness diagram,open,seed row from the VCU design doc section 6
+T6.3.1,Brake light on iff brake actuated,Design 4.6,Bench check,open,seed row from the VCU design doc section 6
+EV4.12.1,R2D sound 1-3 s,Buzzer output + timer,Scope/audio test,open,seed row from the VCU design doc section 6
+EV2.2,Power and current limits,Design 5.5,Logged run with energy meter,open,seed row; read the 2026 numbers
+A6.3.4,Working APPS/BSPD/AMS/IMD before testing,Pre-run checklist,Signed checklist,open,seed row from the VCU design doc section 6
+T11.8.13,"If digital transmission carries the APPS signal, the ESF lists failure modes, detection and tests (corruption, loss, timeout)",PT-CAN: DTI control timeout + Layer 3 gate + TX-confirm monitor; can_e2e on VEH-CAN,"docs/VCU_CAN_Implementation_Spec.md 9 and 10; tests S-1, S-7, S-8",open,VCU to inverter link counts ?
+T11.9.2,SCS single failures incl. data corruption and message loss/delay via timeouts give the safe state,can_e2e RX supervision; DBC RxTimeoutMs; class A rows in the fault table,firmware/test/test_e2e.c; tests S-2 to S-4,open,quoted from the 2026 rules excerpt
+T11.9.3-4,Maximum allowed delay for digital SCS,DBC RxTimeoutMs,,open,Still need confirmation
+EV5.8.10,AMS signals are SCS,AMS_STATE and AMS_LIMITS are class A with timeout = 3 x period,"firmware/test/test_e2e.c; tests S-2, S-10",open,quoted from the 2026 rules excerpt

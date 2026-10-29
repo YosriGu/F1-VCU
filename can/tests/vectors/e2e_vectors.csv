@@ -1,0 +1,7 @@
+# data_id_hex,frame_hex(CRC in byte 0),crc_hex  -- generated with can/tools/e2e_ref.py; shared by the Python and C tests
+A7,ea00102030405060,EA
+A7,ce05000000000000,CE
+5A,f90ee80320030000,F9
+3C,fc00000000000000,FC
+C3,08a3ffffffffffff,08
+96,9c07010203040506,9C

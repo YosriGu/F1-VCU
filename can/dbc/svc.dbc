@@ -1,0 +1,85 @@
+VERSION "svc_0.2_DRAFT"
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	BA_DEF_DEF_
+
+BS_:
+
+BU_: VCU DV SERVICE
+
+
+BO_ 1280 AS_CMD: 8 DV
+ SG_ AS_CMD_CRC : 0|8@1+ (1,0) [0|255] "" VCU
+ SG_ AS_CMD_CNT : 8|4@1+ (1,0) [0|15] "" VCU
+ SG_ AS_CMD_Mission : 12|4@1+ (1,0) [0|15] "" VCU
+ SG_ AS_CMD_TorqueReq_pct : 16|16@1- (0.1,0) [-100|100] "%" VCU
+ SG_ AS_CMD_SteerReq_deg : 32|16@1- (0.01,0) [-327|327] "deg" VCU
+ SG_ AS_CMD_SpeedReq_kmh : 48|16@1+ (0.01,0) [0|300] "km/h" VCU
+
+BO_ 1281 VCU_AS_STATUS: 8 VCU
+ SG_ VCU_AS_CRC : 0|8@1+ (1,0) [0|255] "" DV
+ SG_ VCU_AS_CNT : 8|4@1+ (1,0) [0|15] "" DV
+ SG_ VCU_AS_State : 16|8@1+ (1,0) [0|255] "" DV
+ SG_ VCU_AS_Ready : 24|1@1+ (1,0) [0|1] "" DV
+ SG_ VCU_AS_Fault : 25|1@1+ (1,0) [0|1] "" DV
+ SG_ VCU_AS_Speed_kmh : 32|16@1+ (0.01,0) [0|300] "km/h" DV
+
+CM_ "SVC-CAN, 500 kbit/s, classic CAN, 11-bit IDs. Driverless messages in 0x500-0x5FF are DRAFT. UDS (0x7E0 range) and XCP use ISO-TP/XCP framing and are not described by a DBC.";
+CM_ BO_ 1280 "Driverless command. DRAFT: the driverless rules (T14/T15) were not read. The VCU ignores this message unless autonomous mode is sensed in hardware. Class A, timeout 60 ms = 3 x period, reduce-only relative to the limiter chain.";
+CM_ SG_ 1280 AS_CMD_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 1280 AS_CMD_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+CM_ SG_ 1280 AS_CMD_Mission "Mission ID.";
+CM_ SG_ 1280 AS_CMD_TorqueReq_pct "Negative = braking request. Start value 0.";
+CM_ BO_ 1281 "VCU status for the driverless computer. DRAFT.";
+CM_ SG_ 1281 VCU_AS_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
+CM_ SG_ 1281 VCU_AS_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
+
+BA_DEF_ "BusType" STRING ;
+BA_DEF_ "DBName" STRING ;
+BA_DEF_ "Baudrate" INT 0 1000000;
+BA_DEF_ BO_ "GenMsgSendType" ENUM "cyclic","triggered","cyclicIfActive","cyclicAndTriggered","cyclicIfActiveAndTriggered","none";
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","reserved","J1939PG";
+BA_DEF_ BO_ "SafetyClass" STRING ;
+BA_DEF_ BO_ "RxTimeoutMs" INT 0 65535;
+BA_DEF_ BO_ "DataId" INT 0 255;
+BA_DEF_ BO_ "Verification" STRING ;
+BA_DEF_ SG_ "GenSigStartValue" INT -2147483648 2147483647;
+BA_DEF_DEF_ "BusType" "CAN";
+BA_DEF_DEF_ "DBName" "";
+BA_DEF_DEF_ "Baudrate" 0;
+BA_DEF_DEF_ "GenMsgSendType" "none";
+BA_DEF_DEF_ "GenMsgCycleTime" 0;
+BA_DEF_DEF_ "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_ "SafetyClass" "C";
+BA_DEF_DEF_ "RxTimeoutMs" 0;
+BA_DEF_DEF_ "DataId" 0;
+BA_DEF_DEF_ "Verification" "DRAFT";
+BA_DEF_DEF_ "GenSigStartValue" 0;
+
+BA_ "BusType" "CAN";
+BA_ "DBName" "svc";
+BA_ "Baudrate" 500000;
+BA_ "GenMsgSendType" BO_ 1280 0;
+BA_ "GenMsgCycleTime" BO_ 1280 20;
+BA_ "VFrameFormat" BO_ 1280 0;
+BA_ "SafetyClass" BO_ 1280 "A";
+BA_ "RxTimeoutMs" BO_ 1280 60;
+BA_ "DataId" BO_ 1280 92;
+BA_ "Verification" BO_ 1280 "DRAFT";
+BA_ "GenSigStartValue" SG_ 1280 AS_CMD_TorqueReq_pct 0;
+BA_ "GenSigStartValue" SG_ 1280 AS_CMD_SteerReq_deg 0;
+BA_ "GenSigStartValue" SG_ 1280 AS_CMD_SpeedReq_kmh 0;
+BA_ "GenMsgSendType" BO_ 1281 0;
+BA_ "GenMsgCycleTime" BO_ 1281 20;
+BA_ "VFrameFormat" BO_ 1281 0;
+BA_ "SafetyClass" BO_ 1281 "B";
+BA_ "DataId" BO_ 1281 163;
+BA_ "Verification" BO_ 1281 "DRAFT";
+BA_ "GenSigStartValue" SG_ 1281 VCU_AS_Ready 0;
+

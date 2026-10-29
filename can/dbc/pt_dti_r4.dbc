@@ -1,0 +1,104 @@
+VERSION "pt_dti_r4_0.2_DRAFT"
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	BA_DEF_DEF_
+
+BS_:
+
+BU_: VCU DTI
+
+
+BO_ 2147483926 DTI_SET_CURRENT: 4 VCU
+ SG_ DTI_SetCurrent_A : 7|32@0- (0.001,0) [-1000|1000] "A" DTI
+
+BO_ 2147484182 DTI_SET_BRAKE_CURRENT: 4 VCU
+ SG_ DTI_SetBrakeCurrent_A : 7|32@0- (0.001,0) [0|1000] "A" DTI
+
+BO_ 2147486742 DTI_SET_MAX_AC_CURRENT: 4 VCU
+ SG_ DTI_SetMaxAcCurrent_A : 7|32@0- (0.001,0) [-1000|1000] "A" DTI
+
+BO_ 2147486998 DTI_SET_MAX_AC_BRAKE: 4 VCU
+ SG_ DTI_SetMaxAcBrakeCurrent_A : 7|32@0- (0.001,0) [-1000|1000] "A" DTI
+
+BO_ 2147487254 DTI_SET_MAX_DC_CURRENT: 4 VCU
+ SG_ DTI_SetMaxDcCurrent_A : 7|32@0- (0.001,0) [-1000|1000] "A" DTI
+
+BO_ 2147487510 DTI_SET_MAX_DC_BRAKE: 4 VCU
+ SG_ DTI_SetMaxDcBrakeCurrent_A : 7|32@0- (0.001,0) [-1000|1000] "A" DTI
+
+CM_ "PT-CAN (VCU to DTI HV-550 CAN2 port), 500 kbit/s (baud rate set in DTI Tool, unverified), 29-bit extended IDs. Contains only the COMMANDS the VCU may send. The DTI STATUS messages are intentionally absent: their IDs, byte layout and CAN map version are not verified. They are added only from a bench capture (test T-DTI-1) with Verification BENCH:<capture>.";
+CM_ BO_ 2147483926 "Set current (packet 0x01). ID = (packet << 8) | node, node 0x16 is a project choice. Value = amps x 1000 per DTI CAN description V1.3. Big-endian byte order comes from the VESC lineage and is UNVERIFIED (tests T-DTI-1/T-DTI-2). Sign = torque direction; the regen method is decided by T-DTI-5.";
+CM_ BO_ 2147484182 "Set brake current (packet 0x02). The DTI ignores the sign (V1.3); the VCU always sends the magnitude. Candidate regen mechanism (T-DTI-5).";
+CM_ BO_ 2147486742 "Max AC current (packet 0x0C). BLOCKED in firmware until test T-DTI-6 passes; reduce-only. Sign convention unverified.";
+CM_ BO_ 2147486998 "Max AC brake current (packet 0x0D). BLOCKED until T-DTI-6; reduce-only. Sign convention unverified.";
+CM_ BO_ 2147487254 "Max DC current (packet 0x0E). BLOCKED until T-DTI-6; reduce-only. Sign convention unverified.";
+CM_ BO_ 2147487510 "Max DC brake current (packet 0x0F). BLOCKED until T-DTI-6; reduce-only. Sign convention unverified.";
+
+BA_DEF_ "BusType" STRING ;
+BA_DEF_ "DBName" STRING ;
+BA_DEF_ "Baudrate" INT 0 1000000;
+BA_DEF_ BO_ "GenMsgSendType" ENUM "cyclic","triggered","cyclicIfActive","cyclicAndTriggered","cyclicIfActiveAndTriggered","none";
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ BO_ "VFrameFormat" ENUM "StandardCAN","ExtendedCAN","reserved","J1939PG";
+BA_DEF_ BO_ "SafetyClass" STRING ;
+BA_DEF_ BO_ "RxTimeoutMs" INT 0 65535;
+BA_DEF_ BO_ "DataId" INT 0 255;
+BA_DEF_ BO_ "Verification" STRING ;
+BA_DEF_ SG_ "GenSigStartValue" INT -2147483648 2147483647;
+BA_DEF_DEF_ "BusType" "CAN";
+BA_DEF_DEF_ "DBName" "";
+BA_DEF_DEF_ "Baudrate" 0;
+BA_DEF_DEF_ "GenMsgSendType" "none";
+BA_DEF_DEF_ "GenMsgCycleTime" 0;
+BA_DEF_DEF_ "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_ "SafetyClass" "C";
+BA_DEF_DEF_ "RxTimeoutMs" 0;
+BA_DEF_DEF_ "DataId" 0;
+BA_DEF_DEF_ "Verification" "DRAFT";
+BA_DEF_DEF_ "GenSigStartValue" 0;
+
+BA_ "BusType" "CAN";
+BA_ "DBName" "pt_dti_r4";
+BA_ "Baudrate" 500000;
+BA_ "GenMsgSendType" BO_ 2147483926 0;
+BA_ "GenMsgCycleTime" BO_ 2147483926 5;
+BA_ "VFrameFormat" BO_ 2147483926 1;
+BA_ "SafetyClass" BO_ 2147483926 "A";
+BA_ "Verification" BO_ 2147483926 "SOURCE:DTI_CAN_V1.3";
+BA_ "GenSigStartValue" SG_ 2147483926 DTI_SetCurrent_A 0;
+BA_ "GenMsgSendType" BO_ 2147484182 0;
+BA_ "GenMsgCycleTime" BO_ 2147484182 5;
+BA_ "VFrameFormat" BO_ 2147484182 1;
+BA_ "SafetyClass" BO_ 2147484182 "A";
+BA_ "Verification" BO_ 2147484182 "SOURCE:DTI_CAN_V1.3";
+BA_ "GenSigStartValue" SG_ 2147484182 DTI_SetBrakeCurrent_A 0;
+BA_ "GenMsgSendType" BO_ 2147486742 0;
+BA_ "GenMsgCycleTime" BO_ 2147486742 50;
+BA_ "VFrameFormat" BO_ 2147486742 1;
+BA_ "SafetyClass" BO_ 2147486742 "B";
+BA_ "Verification" BO_ 2147486742 "SOURCE:DTI_CAN_V1.3";
+BA_ "GenSigStartValue" SG_ 2147486742 DTI_SetMaxAcCurrent_A 0;
+BA_ "GenMsgSendType" BO_ 2147486998 0;
+BA_ "GenMsgCycleTime" BO_ 2147486998 50;
+BA_ "VFrameFormat" BO_ 2147486998 1;
+BA_ "SafetyClass" BO_ 2147486998 "B";
+BA_ "Verification" BO_ 2147486998 "SOURCE:DTI_CAN_V1.3";
+BA_ "GenSigStartValue" SG_ 2147486998 DTI_SetMaxAcBrakeCurrent_A 0;
+BA_ "GenMsgSendType" BO_ 2147487254 0;
+BA_ "GenMsgCycleTime" BO_ 2147487254 50;
+BA_ "VFrameFormat" BO_ 2147487254 1;
+BA_ "SafetyClass" BO_ 2147487254 "B";
+BA_ "Verification" BO_ 2147487254 "SOURCE:DTI_CAN_V1.3";
+BA_ "GenSigStartValue" SG_ 2147487254 DTI_SetMaxDcCurrent_A 0;
+BA_ "GenMsgSendType" BO_ 2147487510 0;
+BA_ "GenMsgCycleTime" BO_ 2147487510 50;
+BA_ "VFrameFormat" BO_ 2147487510 1;
+BA_ "SafetyClass" BO_ 2147487510 "B";
+BA_ "Verification" BO_ 2147487510 "SOURCE:DTI_CAN_V1.3";
+BA_ "GenSigStartValue" SG_ 2147487510 DTI_SetMaxDcBrakeCurrent_A 0;
+

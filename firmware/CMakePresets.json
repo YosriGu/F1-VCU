@@ -1,0 +1,52 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": { "major": 3, "minor": 21, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "host-debug",
+      "displayName": "Host unit tests (GCC)",
+      "binaryDir": "${sourceDir}/build/host-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "VCU_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "host-sanitize",
+      "displayName": "Host unit tests with ASan + UBSan",
+      "binaryDir": "${sourceDir}/build/host-sanitize",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "VCU_BUILD_TESTS": "ON",
+        "CMAKE_C_FLAGS": "-fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer"
+      }
+    },
+    {
+      "name": "arm-libs",
+      "displayName": "Cross-compile the libraries for Cortex-M7 (no link)",
+      "binaryDir": "${sourceDir}/build/arm-libs",
+      "toolchainFile": "${sourceDir}/cmake/arm-none-eabi.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel",
+        "VCU_BUILD_TESTS": "OFF"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "host-debug", "configurePreset": "host-debug" },
+    { "name": "host-sanitize", "configurePreset": "host-sanitize" },
+    { "name": "arm-libs", "configurePreset": "arm-libs" }
+  ],
+  "testPresets": [
+    {
+      "name": "host-debug",
+      "configurePreset": "host-debug",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "host-sanitize",
+      "configurePreset": "host-sanitize",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}

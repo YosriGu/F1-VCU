@@ -1,0 +1,88 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Job names below are what you select as "required status checks" in branch protection.
+  can:
+    name: can
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: can/tools/requirements.lock.txt
+      - run: pip install -r can/tools/requirements.lock.txt
+      - name: DBC rules (IDs, ranges, E2E layout, timeouts)
+        run: python can/tools/check_dbc.py
+      - name: Generated files are up to date
+        run: python can/tools/generate.py --check
+      - name: Worst-case bus load
+        run: python can/tools/busload.py
+      - name: Python tests
+        run: python -m pytest -q
+
+  firmware-host:
+    name: firmware-host
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure, build, test (GCC, warnings are errors)
+        working-directory: firmware
+        run: |
+          cmake --preset host-debug
+          cmake --build --preset host-debug
+          ctest --preset host-debug
+
+  firmware-sanitize:
+    name: firmware-sanitize
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure, build, test with ASan + UBSan
+        working-directory: firmware
+        run: |
+          cmake --preset host-sanitize
+          cmake --build --preset host-sanitize
+          ctest --preset host-sanitize
+
+  firmware-arm-libs:
+    name: firmware-arm-libs
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install GNU Arm Embedded GCC
+        run: sudo apt-get update && sudo apt-get install -y gcc-arm-none-eabi
+      - name: Cross-compile libraries for Cortex-M7 (no link)
+        working-directory: firmware
+        run: |
+          arm-none-eabi-gcc --version
+          cmake --preset arm-libs
+          cmake --build --preset arm-libs
+
+  static-analysis:
+    name: static-analysis
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+      - name: cppcheck (hand-written code only)
+        run: |
+          cppcheck -q --std=c11 --enable=warning,style,performance,portability \
+            --inline-suppr --error-exitcode=1 --suppress=missingIncludeSystem \
+            -I firmware/lib/can_e2e -I firmware/lib/can_dti \
+            -DE2E_VECTORS_CSV='"x.csv"' \
+            firmware/lib firmware/test

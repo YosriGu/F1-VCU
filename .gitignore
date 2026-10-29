@@ -1,0 +1,28 @@
+# build output
+firmware/build/
+build/
+*.o
+*.obj
+*.elf
+*.map
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# editors
+.idea/
+.vscode/
+*.swp
+
+# large raw logs: attach to a release or keep on the team drive, record them in test-evidence/INDEX.csv
+*.blf
+*.mf4
+*.log
+
+# NXP / vendor material (licensed, do not commit): link it from docs/references.md instead
+vendor/
+*.zip
