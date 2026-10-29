@@ -53,6 +53,11 @@ def data_id(msg) -> int:
     return int(attr(msg, "DataId", 0))
 
 
+def e2e_exempt(msg) -> str:
+    """Reason string if the message is exempt from the E2E header, else ''."""
+    return str(attr(msg, "E2EExempt", "")).strip()
+
+
 def vcu_is_sender(msg) -> bool:
     return "VCU" in msg.senders
 
