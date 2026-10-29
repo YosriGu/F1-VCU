@@ -10,7 +10,7 @@ NS_ :
 
 BS_:
 
-BU_: VCU AMS DASH LOG PDU SNS_STEER SNS_DAMP_F SNS_DAMP_R SNS_TEMP
+BU_: VCU AMS DASH LOG PDU SENSOR
 
 
 BO_ 1 VCU_EMERGENCY: 8 VCU
@@ -136,28 +136,33 @@ BO_ 272 VCU_DASH: 6 VCU
  SG_ VCU_DashWarnFlags : 24|16@1+ (1,0) [0|65535] "" DASH
  SG_ VCU_DashCode : 40|8@1+ (1,0) [0|255] "" DASH
 
-BO_ 512 SNS_STEER: 8 SNS_STEER
+BO_ 273 PDU_CMD: 3 VCU
+ SG_ VCU_PduPumpDuty_pct : 0|8@1+ (0.5,0) [0|100] "%" PDU
+ SG_ VCU_PduFan1Duty_pct : 8|8@1+ (0.5,0) [0|100] "%" PDU
+ SG_ VCU_PduFan2Duty_pct : 16|8@1+ (0.5,0) [0|100] "%" PDU
+
+BO_ 512 SNS_STEER: 8 SENSOR
  SG_ SNS_STEER_CRC : 0|8@1+ (1,0) [0|255] "" VCU,LOG
  SG_ SNS_STEER_CNT : 8|4@1+ (1,0) [0|15] "" VCU,LOG
  SG_ SNS_SteerStatus : 12|4@1+ (1,0) [0|15] "" VCU,LOG
  SG_ SNS_SteerAngle_deg : 16|16@1- (0.01,0) [-327|327] "deg" VCU,LOG
  SG_ SNS_SteerRate_dps : 32|16@1- (0.1,0) [-1000|1000] "deg/s" VCU,LOG
 
-BO_ 513 SNS_DAMP_F: 4 SNS_DAMP_F
+BO_ 513 SNS_DAMP_F: 4 SENSOR
  SG_ SNS_DampFL_mm : 0|16@1+ (0.01,0) [0|150] "mm" LOG
  SG_ SNS_DampFR_mm : 16|16@1+ (0.01,0) [0|150] "mm" LOG
 
-BO_ 514 SNS_DAMP_R: 4 SNS_DAMP_R
+BO_ 514 SNS_DAMP_R: 4 SENSOR
  SG_ SNS_DampRL_mm : 0|16@1+ (0.01,0) [0|150] "mm" LOG
  SG_ SNS_DampRR_mm : 16|16@1+ (0.01,0) [0|150] "mm" LOG
 
-BO_ 515 SNS_TYRE_TEMP: 8 SNS_TEMP
+BO_ 515 SNS_TYRE_TEMP: 8 SENSOR
  SG_ SNS_TyreFL_C : 0|16@1- (0.1,0) [-40|250] "degC" LOG
  SG_ SNS_TyreFR_C : 16|16@1- (0.1,0) [-40|250] "degC" LOG
  SG_ SNS_TyreRL_C : 32|16@1- (0.1,0) [-40|250] "degC" LOG
  SG_ SNS_TyreRR_C : 48|16@1- (0.1,0) [-40|250] "degC" LOG
 
-BO_ 516 SNS_BRAKE_TEMP: 8 SNS_TEMP
+BO_ 516 SNS_BRAKE_TEMP: 8 SENSOR
  SG_ SNS_BrakeFL_C : 0|16@1- (0.1,0) [-40|1000] "degC" LOG
  SG_ SNS_BrakeFR_C : 16|16@1- (0.1,0) [-40|1000] "degC" LOG
  SG_ SNS_BrakeRL_C : 32|16@1- (0.1,0) [-40|1000] "degC" LOG
@@ -170,11 +175,6 @@ BO_ 768 PDU_STATUS: 8 PDU
  SG_ PDU_Ch3_A : 32|8@1+ (0.1,0) [0|25.5] "A" VCU,LOG
  SG_ PDU_Ch4_A : 40|8@1+ (0.1,0) [0|25.5] "A" VCU,LOG
  SG_ PDU_FaultFlags : 48|16@1+ (1,0) [0|65535] "" VCU,LOG
-
-BO_ 769 PDU_CMD: 3 VCU
- SG_ VCU_PduPumpDuty_pct : 0|8@1+ (0.5,0) [0|100] "%" PDU
- SG_ VCU_PduFan1Duty_pct : 8|8@1+ (0.5,0) [0|100] "%" PDU
- SG_ VCU_PduFan2Duty_pct : 16|8@1+ (0.5,0) [0|100] "%" PDU
 
 BO_ 1024 TIME_SYNC: 8 VCU
  SG_ TS_UptimeMs : 0|32@1+ (1,0) [0|4294967295] "ms" LOG,DASH
@@ -236,6 +236,7 @@ CM_ BO_ 261 "Telemetry 5: temperatures and LV supply.";
 CM_ BO_ 262 "Telemetry 6: inverter speed and fault, PT-CAN health counters (spec section 7.4).";
 CM_ BO_ 272 "Dashboard feed: speed, state of charge, warnings.";
 CM_ SG_ 272 VCU_DashCode "Text/state code index (to be allocated).";
+CM_ BO_ 273 "Cooling request (moved from 0x301 to 0x111 so the VCU sends from its own ID range). The PDU runs cooling at 100 % if this message is silent for 500 ms (a silent controller must not stop cooling).";
 CM_ BO_ 512 "Steering angle sensor node. VCU timeout 100 ms disables the feature that uses it. Never used to raise torque.";
 CM_ SG_ 512 SNS_STEER_CRC "CRC-8/SAE-J1850 over DataId and bytes 1..7 (spec section 5.2)";
 CM_ SG_ 512 SNS_STEER_CNT "Rolling counter 0..14; 15 is never valid (spec section 5.1)";
@@ -245,7 +246,6 @@ CM_ BO_ 514 "Rear damper travel, logger only.";
 CM_ BO_ 515 "Tyre temperatures, logger only.";
 CM_ BO_ 516 "Brake disc temperatures, logger only.";
 CM_ BO_ 768 "PDU status. Channel assignment (pump, fans, ...) is defined in the ICD.";
-CM_ BO_ 769 "Cooling request. The PDU runs cooling at 100 % if this message is silent for 500 ms (a silent controller must not stop cooling).";
 CM_ BO_ 1024 "Time reference for the logger. The logger itself is listen-only and never transmits.";
 
 BA_DEF_ "BusType" STRING ;
@@ -388,6 +388,14 @@ BA_ "GenMsgCycleTime" BO_ 272 50;
 BA_ "VFrameFormat" BO_ 272 0;
 BA_ "SafetyClass" BO_ 272 "C";
 BA_ "Verification" BO_ 272 "DRAFT";
+BA_ "GenMsgSendType" BO_ 273 0;
+BA_ "GenMsgCycleTime" BO_ 273 50;
+BA_ "VFrameFormat" BO_ 273 0;
+BA_ "SafetyClass" BO_ 273 "C";
+BA_ "Verification" BO_ 273 "DRAFT";
+BA_ "GenSigStartValue" SG_ 273 VCU_PduPumpDuty_pct 200;
+BA_ "GenSigStartValue" SG_ 273 VCU_PduFan1Duty_pct 200;
+BA_ "GenSigStartValue" SG_ 273 VCU_PduFan2Duty_pct 200;
 BA_ "GenMsgSendType" BO_ 512 0;
 BA_ "GenMsgCycleTime" BO_ 512 10;
 BA_ "VFrameFormat" BO_ 512 0;
@@ -421,14 +429,6 @@ BA_ "VFrameFormat" BO_ 768 0;
 BA_ "SafetyClass" BO_ 768 "C";
 BA_ "RxTimeoutMs" BO_ 768 100;
 BA_ "Verification" BO_ 768 "DRAFT";
-BA_ "GenMsgSendType" BO_ 769 0;
-BA_ "GenMsgCycleTime" BO_ 769 50;
-BA_ "VFrameFormat" BO_ 769 0;
-BA_ "SafetyClass" BO_ 769 "C";
-BA_ "Verification" BO_ 769 "DRAFT";
-BA_ "GenSigStartValue" SG_ 769 VCU_PduPumpDuty_pct 200;
-BA_ "GenSigStartValue" SG_ 769 VCU_PduFan1Duty_pct 200;
-BA_ "GenSigStartValue" SG_ 769 VCU_PduFan2Duty_pct 200;
 BA_ "GenMsgSendType" BO_ 1024 0;
 BA_ "GenMsgCycleTime" BO_ 1024 1000;
 BA_ "VFrameFormat" BO_ 1024 0;
